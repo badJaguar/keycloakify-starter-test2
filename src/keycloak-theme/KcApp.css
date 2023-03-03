@@ -1,16 +1,12 @@
-
-.my-color {
-	color: red;
-}
-
-.my-font {
-	font-family: 'Work Sans';
-}
-
-.my-root-class {
+.root-class {
 	background: white;
 }
 
-.my-root-class body {
+.root-class body {
 	background: url(./assets/background.svg) no-repeat center center fixed;
+  background: white;
+}
+
+#kc-form-options span{
+  display: flex;
 }

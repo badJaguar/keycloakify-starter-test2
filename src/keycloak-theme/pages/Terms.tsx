@@ -16,66 +16,66 @@ import type { KcContext } from "../kcContext";
 import type { I18n } from "../i18n";
 
 export default function Terms(props: PageProps<Extract<KcContext, { pageId: "terms.ftl"; }>, I18n>) {
-	const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
+  const { kcContext, i18n, doFetchDefaultThemeResources = true, Template, ...kcProps } = props;
 
-	const { msg, msgStr } = i18n;
+  const { msg, msgStr } = i18n;
 
-	useDownloadTerms({
-		kcContext,
-		"downloadTermMarkdown": async ({ currentLanguageTag }) => {
+  useDownloadTerms({
+    kcContext,
+    "downloadTermMarkdown": async ({ currentLanguageTag }) => {
 
-			const markdownString = await fetch((() => {
-				switch (currentLanguageTag) {
-					case "fr": return tos_fr_url;
-					default: return tos_en_url;
-				}
-			})()).then(response => response.text());
+      const markdownString = await fetch((() => {
+        switch (currentLanguageTag) {
+        case "fr": return tos_fr_url;
+        default: return tos_en_url;
+        }
+      })()).then(response => response.text());
 
-			return markdownString;
-		},
-	});
+      return markdownString;
+    },
+  });
 
-	useRerenderOnStateChange(evtTermMarkdown);
+  useRerenderOnStateChange(evtTermMarkdown);
 
-	const { url } = kcContext;
+  const { url } = kcContext;
 
-	if (evtTermMarkdown.state === undefined) {
-		return null;
-	}
+  if (evtTermMarkdown.state === undefined) {
+    return null;
+  }
 
-	return (
-		<Template
-			{...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
-			displayMessage={false}
-			headerNode={msg("termsTitle")}
-			formNode={
-				<>
-					<div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
-					<form className="form-actions" action={url.loginAction} method="POST">
-						<input
-							className={clsx(
-								kcProps.kcButtonClass,
-								kcProps.kcButtonClass,
-								kcProps.kcButtonClass,
-								kcProps.kcButtonPrimaryClass,
-								kcProps.kcButtonLargeClass
-							)}
-							name="accept"
-							id="kc-accept"
-							type="submit"
-							value={msgStr("doAccept")}
-						/>
-						<input
-							className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
-							name="cancel"
-							id="kc-decline"
-							type="submit"
-							value={msgStr("doDecline")}
-						/>
-					</form>
-					<div className="clearfix" />
-				</>
-			}
-		/>
-	);
+  return (
+    <Template
+      {...{ kcContext, i18n, doFetchDefaultThemeResources, ...kcProps }}
+      displayMessage={false}
+      headerNode={msg("termsTitle")}
+      formNode={
+        <>
+          <div id="kc-terms-text">{evtTermMarkdown.state && <Markdown>{evtTermMarkdown.state}</Markdown>}</div>
+          <form className="form-actions" action={url.loginAction} method="POST">
+            <input
+              className={clsx(
+                kcProps.kcButtonClass,
+                kcProps.kcButtonClass,
+                kcProps.kcButtonClass,
+                kcProps.kcButtonPrimaryClass,
+                kcProps.kcButtonLargeClass
+              )}
+              name="accept"
+              id="kc-accept"
+              type="submit"
+              value={msgStr("doAccept")}
+            />
+            <input
+              className={clsx(kcProps.kcButtonClass, kcProps.kcButtonDefaultClass, kcProps.kcButtonLargeClass)}
+              name="cancel"
+              id="kc-decline"
+              type="submit"
+              value={msgStr("doDecline")}
+            />
+          </form>
+          <div className="clearfix" />
+        </>
+      }
+    />
+  );
 }
